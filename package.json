@@ -1,0 +1,15 @@
+{
+  "name": "qwertsichord",
+  "version": "0.0.1",
+  "description": "qwerty keyboard into a configurable midi instrument",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "easymidi": "0.0.2",
+    "xev-emitter": "0.0.1"
+  }
+}
