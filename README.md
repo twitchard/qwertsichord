@@ -1,6 +1,15 @@
 # Qwertsichord
 Turn your qwerty keyboard into a fun musical instrument. No GUI. Linux only.
 
+The ultimate goal: Raspberry pi + usb keyboard + usb speakers = amazing live performance = legions of adoring fans
+
+
+## Prerequisites
+
+- Linux Desktop, running X11 (with the `xev` utility)
+- FluidSynth
+- Nodejs 4+
+
 ## Setup
 
 ### Installation:
@@ -35,6 +44,6 @@ xset r off
 ## Usage
 Currently, you can play the notes in the C major scale by pressing the keys of the home row of my dvorak keyboard. That's it. Lame, right?
 
-I'm still in the planning stages of how to make an interesting midi instrument out of a QWERTY keyboard. I am targeting an n-key rollover keyboard, since that is what I have. It would be cool to be able to have multiple voices, or support looping. Not exactly sure what I want.
+I'm still in the planning stages of how to make an interesting midi instrument out of a QWERTY keyboard. I'm thinking vim-inspired keybindings and recording?
 
 If you have any ideas, I'd be interested in hearing them, and I encourage you to check out the code and play around with it.
