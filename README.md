@@ -42,8 +42,10 @@ xset r off
 
 
 ## Usage
-Currently, you can play the notes in the C major scale by pressing the keys of the home row of my dvorak keyboard. That's it. Lame, right?
+Your right hand is a 'pipe'. It sounds one note at a time, and you basically count in binary to go up the C major scale.
 
-I'm still in the planning stages of how to make an interesting midi instrument out of a QWERTY keyboard. I'm thinking vim-inspired keybindings and recording?
+E.g., your index finger alone is middle C. Your middle finger is the D above middle C. Your index finger plus your middle finger sounds the E above middle c, and so on and so forth. Further more, stretch your index finger towards the middle, and that key counts as a sharping key, and raises whatever note by a half step.
 
-If you have any ideas, I'd be interested in hearing them, and I encourage you to check out the code and play around with it.
+The left hand controls the 'drones'. These operate upon the same 'binary counting' principal, but hitting a combination of keys triggers the corresponding 'drone' to be sounded indefinitely, until the combination is pressed again to turn it off.
+
+It's kind of a fun, bagpipe experience. Try playing "amazing grace" or something.
