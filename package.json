@@ -2,7 +2,7 @@
   "name": "qwertsichord",
   "version": "0.0.3",
   "description": "qwerty keyboard into a configurable midi instrument",
-  "main": "index.js",
+  "main": "bin/qwertsichord.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -11,5 +11,8 @@
   "dependencies": {
     "easymidi": "0.0.2",
     "xev-emitter": "0.0.1"
+  },
+  "bin": {
+    "qwertsichord": "bin/qwertsichord.js"
   }
 }
