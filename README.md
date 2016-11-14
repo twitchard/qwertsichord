@@ -3,39 +3,41 @@ Turn your qwerty keyboard into a fun musical instrument. No GUI. Linux only.
 
 The ultimate goal: Raspberry pi + usb keyboard + usb speakers = amazing live performance = legions of adoring fans
 
-
 ## Prerequisites
 
-- Linux Desktop, running X11 (with the `xev` utility)
-- FluidSynth
-- Nodejs 4+
+- X.org and the the `xev` utility (on Archlinux, `pacman -S xorg-xev`)
+- FluidSynth (on Archlinux, `pacman -S fluidsynth`)
+- FluidSynth soundfonts (on Archlinux, `pacman -S soundfont-fluid`)
+- Nodejs 4+ (on Archlinux, `pacman -S nodejs` -- or use [nvm](https://github.com/creationix/nvm) )
 
 ## Setup
 
-### Installation:
+### Quick start:
 
-```sh
-git clone https://github.com/twitchard/qwertsichord
-cd qwertsichord
-npm install
-```
-
-### Server
-Currently qwertsichord is configured to detect and connect to a running instance of fluidsynth. So start that up:
-
+#### Start fluidsynth
+The command I use is this -- customize appropriately for your system:
 ```sh
 fluidsynth /usr/share/soundfonts/FluidR3_GM.sf2 -s -a pulseaudio
 ```
 
-### Execute
-Qwertsichord doesn't source keyboard events itself, but relies on the `xev` utility and parses its output from standard input via [xev-emitter](https://github.com/twitchard/nodejs-xev-emitter). So you must have `xev` installed on your system and pipe its input into qwertsichord like so:
+#### Install qwertsichord
 
+As an npm global module:
 ```sh
-xev | node index.js
+npm install -g qwertsichord
+xev | qwertsichord
 ```
 
-You may want to disable autorepeat.
+Via git (better for tinkering):
+```sh
+git clone https://github.com/twitchard/qwertsichord
+cd qwertsichord
+npm install
+xev | node bin/qwertsichord.js
+```
 
+#### Hints
+You may want to disable autorepeat.
 ```sh
 xset r off
 ```
