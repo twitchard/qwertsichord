@@ -1,6 +1,6 @@
 {
   "name": "qwertsichord",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "qwerty keyboard into a configurable midi instrument",
   "main": "bin/qwertsichord.js",
   "scripts": {
