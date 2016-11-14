@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#/usr/bin/env node
 const output       = require('../lib/output')
 const xevEmitter   = require('xev-emitter')(process.stdin)
 
