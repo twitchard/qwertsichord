@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>The Legend of Qwertsichord</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css">
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+      body { font-family: 'Droid Serif'; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      a {
+          text-decoration: none;
+          color: cyan;
+      }
+      h4 {
+          font-weight: normal;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      .remark-slide {
+          height: 66%
+      }
+      .remark-slide-content {
+          background: #222;
+          color: #ddd;
+      }
+      .remark-slide-scaler::after {
+          display: block;
+          position: absolute;
+          bottom: 16%;
+          text-align: center;
+          width: 100%;
+          content: 'This space intentionally left blank.'
+      }
+      .title img{
+          width: 30%
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle, title
+
+# Qwertsichord
+
+**Richard Marmorstein**
+
+
+![me](me.jpg)
+
+---
+
+# What you will learn
+
+### It is easy to implement a musical application in Node.js
+
+---
+# What you will learn
+
+### It is easy to implement a musical application in Node.js
+### It is delightful to implement a musical application in Node.js
+
+---
+# What you will learn
+
+### It is easy to implement a musical application in Node.js
+### It is delightful to implement a musical application in Node.js
+### It is **your personal destiny** to implement your very own musical instrument in Node.js.
+
+???
+
+After this presentation, you will experience true clarity of purpose.
+
+I bet you find that hard to believe. I mean look at the title slide. That's not a very exciting title slide. So I renamed the presentation.
+---
+
+class: center, middle, title
+
+# Qwertsichord
+
+**Richard Marmorstein**
+
+
+![me](me.jpg)
+
+---
+class: center, middle
+## Richard Marmorstein
+and the
+## Legend
+of
+#Qwertsichord
+
+<marquee>Your destiny awaits</marquee>
+???
+
+---
+
+## What is Qwertsichord
+
+  * Turn your qwerty keyboard into a fun musical instrument.
+  * No GUI.
+  * GNU/Linux only.
+
+
+---
+class: center
+
+# Making a musical instrument in two lessons
+
+## 1. When you press keys...
+
+---
+class: center
+
+# Making a musical instrument in two lessons
+
+## 1. When you press keys...
+
+## 2. it makes sound
+---
+## 1. When you press keys
+
+#### `.on('keyup')` and `.on('keydown')`?
+
+---
+## 1. When you press keys
+
+<strike>.on('keyup') and .on('keydown')?</strike>
+
+<center>Alas, no such thing in Node.js</center>
+
+---
+## 1. When you press keys
+
+<strike>.on('keyup') and .on('keydown')?</strike>
+
+<center>Alas, no such thing in Node.js</center>
+
+`process.stdin.on('keypress')`?
+
+---
+## 1. When you press keys
+
+<strike>.on('keyup') and .on('keydown')?</strike>
+
+<center>Alas, no such thing in Node.js</center>
+
+<strike>process.stdin.on('keypress')</strike>?
+
+<center> Inadequate.  </center>
+
+---
+## 1. When you press keys
+
+<strike>.on('keyup') and .on('keydown')?</strike>
+
+<center>Alas, no such thing in Node.js</center>
+
+<strike>process.stdin.on('keypress')</strike>?
+
+<center>
+Inadequate.
+</center>
+
+`npm install node-sdl`?
+
+---
+## 1. When you press keys
+
+<strike>.on('keyup') and .on('keydown')?</strike>
+
+<center>Alas, no such thing in Node.js</center>
+
+<strike>process.stdin.on('keypress')</strike>?
+
+<center> Inadequate.  </center>
+
+<strike>npm install node-sdl</strike>? 
+
+<center>Too complicated/"finicky"</center>
+
+---
+# npm install xev-emitter
+- Processes output of 'xev' command.
+- Written by trusted author.
+- True to the UNIX philosophy.
+
+---
+```
+// example.js
+const xevEmitter = require('xev-emitter')(process.stdin)
+xevEmitter.on('KeyPress', (key) => {
+    console.log(key, 'was pressed')
+})
+
+xevEmitter.on('KeyRelease', (key) => {
+    console.log(key, 'was released')
+})
+```
+
+**Run it:**
+
+```
+$ xev | node example.js
+
+a was pressed
+b was pressed
+b was released
+```
+---
+# Making a musical instrument in two lessons
+## 1. When you press keys
+## 2. It makes sound.
+---
+
+## 2. It makes sound.
+
+---
+
+## MIDI
+
+### *Musical Instrument Digital Interface*
+
+Decouples 'choosing what notes to play' (MIDI 'controller')
+
+from 
+
+'producing the sound of the note' (MIDI 'sound module')
+
+???
+Published in August 1983
+
+---
+## Yay for MIDI
+Qwertsichord can outsource the hard part, 'producing the sound of the note' to some other program.
+Many choices on Linux 
+  - 'zynaddsubfx'
+  - 'amsynth'
+  - 'FLUIDsynth'
+---
+
+## MIDI
+
+![Midi table](miditable.png)
+
+---
+
+**npm install midi**
+
+[github.com/justinlatimer/node-midi](https://github.com/justinlatimer/node-midi#)
+
+```
+var midi = require('midi')
+var output = new midi.output()
+
+console.log(output.getPortCount())
+// "2"
+console.log(output.getPortName(0))
+// "Midi Through 14:0"
+console.log(output.getPortName(1))
+// "FLUID Synth (2188) 128:0"
+
+output.openPort(1) // Connect to FLUID Synth
+
+output.sendMessage([144, 60, 90]) // Play middle C
+setTimeout(function () {
+    output.sendMessage([128, 60, 40]) // Stop playing middle C
+}, 1000)
+```
+???
+Still too hard?
+Who here wants to send magic numbers everywhere
+---
+## npm install easymidi
+
+```
+var easymidi = require('easymidi');
+var output = new easymidi.Output('FLUID Synth (2188) 128:0');
+output.send('noteon', {
+  note: 64, // E above middle C
+  velocity: 127,
+  channel: 3
+});
+```
+???
+const outputName = easymidi.getOutputs().filter(RegExp.prototype.test.bind(/FLUID/))[0]
+---
+## Qwertsichord
+
+- Not just a piano. Pianos are boring.
+- You count in binary to go up the scale.
+- Your right hand is a pipe that plays a single note at a time.
+- Your left hand is 'drones' that layers notes on and off.
+- Not just any QWERTY keyboard will do, unfortunately
+
+---
+### Excerpts from the source code
+
+```
+// Initializing the instrument
+const MELODY_KEYS = [ 'j', 'k', 'l', ';' ]
+const MELODY_SHARP_KEY = 'h'
+const melodyPipe = new MelodyPipe(
+    0, // MIDI Channel
+    20, // MIDI Program
+    output, // From easymidi
+    MELODY_KEYS,
+    MELODY_SHARP_KEY
+)
+melodyPipe.connect(xevEmitter)
+```
+
+---
+### Excerpts from the source code
+```
+// melodypipe.js
+class MelodyPipe {
+    ...
+    play (note) {
+        // Stop playing the previous note
+        if (this.note) {
+            this.output.send('noteoff', this.note)
+        }
+
+        // Start playing the new note
+        if (note) {
+            const send = {
+                note,
+                velocity: VELOCITY,
+                channel: this.channel
+            }
+            this.output.send('noteon', send)
+            this.note = send
+        }
+    }
+    ...
+}
+```
+---
+### Excerpts from the source code
+```
+// Determining what note to play:
+
+let num = 0
+let mult = 1
+
+this.melodyKeys.map((x) => {
+    if (this.pressedKeys.has(x)) {
+        num += mult
+    }
+    mult *= 2
+})
+const sharp = this.pressedKeys.has(this.sharpKey) ? 1 : 0
+if (num === 0) {
+    this.play(null)
+} else {
+    this.play(BASE_NOTE + ionianScale(num - 1) + sharp)
+}
+```
+---
+## Live Demo
+
+    </textarea>
+    <script src="remark.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
