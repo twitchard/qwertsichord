@@ -43,14 +43,15 @@
   <body>
     <textarea id="source">
 
-class: center, middle, title
+class: center, middle
+## Richard Marmorstein
+and the
+## Legend
+of
+#Qwertsichord
 
-# Qwertsichord
-
-**Richard Marmorstein**
-
-
-![me](me.jpg)
+<marquee>Your destiny awaits</marquee>
+???
 
 ---
 
@@ -74,29 +75,13 @@ class: center, middle, title
 ???
 
 After this presentation, you will experience true clarity of purpose.
-
-I bet you find that hard to believe. I mean look at the title slide. That's not a very exciting title slide. So I renamed the presentation.
 ---
 
-class: center, middle, title
+## What is Qwertsichord
 
-# Qwertsichord
-
-**Richard Marmorstein**
-
-
-![me](me.jpg)
-
----
-class: center, middle
-## Richard Marmorstein
-and the
-## Legend
-of
-#Qwertsichord
-
-<marquee>Your destiny awaits</marquee>
-???
+  * Turn your qwerty keyboard into a fun musical instrument.
+  * No GUI.
+  * GNU/Linux only.
 
 ---
 
@@ -106,6 +91,12 @@ of
   * No GUI.
   * GNU/Linux only.
 
+**Just imagine**
+  - Raspberry pi 
+  - usb keyboard
+  - usb speakers 
+  - amazing live performance
+  - legions of adoring fans
 
 ---
 class: center
@@ -316,9 +307,8 @@ melodyPipe.connect(xevEmitter)
 ```
 
 ---
-### Excerpts from the source code
 ```
-// melodypipe.js
+// playing a note
 class MelodyPipe {
     ...
     play (note) {
@@ -326,14 +316,9 @@ class MelodyPipe {
         if (this.note) {
             this.output.send('noteoff', this.note)
         }
-
         // Start playing the new note
         if (note) {
-            const send = {
-                note,
-                velocity: VELOCITY,
-                channel: this.channel
-            }
+            const send = { note, velocity: VELOCITY, channel: this.channel }
             this.output.send('noteon', send)
             this.note = send
         }
@@ -342,24 +327,47 @@ class MelodyPipe {
 }
 ```
 ---
-### Excerpts from the source code
+```
+// Keep track of what keys are pressed
+class MelodyPipe {
+    ...
+    connect (xevEmitter) {
+        xevEmitter.on('KeyPress', (key) => {
+            this.pressedKeys.add(key)
+            this._refresh()
+        })
+        xevEmitter.on('KeyRelease', (key) => {
+            this.pressedKeys.delete(key)
+            this._refresh()
+        })
+    }
+    ...
+}
+```
+---
 ```
 // Determining what note to play:
-
-let num = 0
-let mult = 1
-
-this.melodyKeys.map((x) => {
-    if (this.pressedKeys.has(x)) {
-        num += mult
+class MelodyPipe {
+    ...
+    _refresh() {
+        ...
+        let num = 0
+        let mult = 1
+        this.melodyKeys.map((x) => {
+            if (this.pressedKeys.has(x)) {
+                num += mult
+            }
+            mult *= 2
+        })
+        const sharp = this.pressedKeys.has(this.sharpKey) ? 1 : 0
+        if (num === 0) {
+            this.play(null)
+        } else {
+            this.play(BASE_NOTE + ionianScale(num - 1) + sharp)
+        }
+        ...
     }
-    mult *= 2
-})
-const sharp = this.pressedKeys.has(this.sharpKey) ? 1 : 0
-if (num === 0) {
-    this.play(null)
-} else {
-    this.play(BASE_NOTE + ionianScale(num - 1) + sharp)
+    ...
 }
 ```
 ---
